@@ -15,7 +15,7 @@ model User {
   name          String?
   phone         String?   // 用於黑名單鎖定
   role          Role      @default(USER)
-  
+
   // 違規與黑名單
   violationCount Int      @default(0)
   isBlacklisted  Boolean  @default(false)
@@ -25,7 +25,7 @@ model User {
 
   orders        Order[]
   cart          Cart?
-  
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -58,7 +58,7 @@ model Cart {
   userId    String     @unique
   user      User       @relation(fields: [userId], references: [id])
   items     CartItem[]
-  
+
   updatedAt DateTime   @updatedAt
 }
 
@@ -76,19 +76,19 @@ model Order {
   id              String        @id @default(cuid())
   userId          String
   user            User          @relation(fields: [userId], references: [id])
-  
+
   // 金額計算
   totalAmount     Int           // 商品總額 (不含運費)
   shippingFee     Int           // 運費
   finalAmount     Int           // 應付總額 (全額模式含運費，訂金模式為 80%)
-  
+
   // 狀態管理
   status          OrderStatus   @default(PENDING_PAYMENT)
-  
+
   // 付款與物流方式
   paymentMethod   PaymentMethod
   shippingMethod  ShippingMethod // NORMAL (交貨便), DISCOUNT (賣貨便)
-  
+
   // 匯款回報資訊
   remitName       String?       // 匯款人姓名
   remitAccount    String?       // 帳號後五碼
@@ -115,7 +115,7 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id])
   productId String
   product   Product @relation(fields: [productId], references: [id])
-  
+
   quantity  Int
   price     Int     // 下單時的單價 (Snapshot)
 }
